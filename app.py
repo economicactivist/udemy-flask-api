@@ -33,7 +33,12 @@ def get_store(name):
 
 @app.route('/store')
 def get_stores():
-    pass
+    stores = Store.query.all()
+    store_items = StoreItem.query.all()
+    serialized_stores = [store.serialize() for store in stores]
+    serialized_items = [item.serialize() for item in store_items]
+    return jsonify(stores=serialized_stores, items=serialized_items)
+    # return render_template('stores.html', stores=stores)
 
 @app.route('/store/<string:name>/item', methods=['POST'])
 def create_item_in_store():
