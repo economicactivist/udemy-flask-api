@@ -18,6 +18,12 @@ class Store(db.Model):
     
     def __repr__(self):
         return "<Store: {}>".format(self.name)
+        
+    def serialize_store(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
 
 class StoreItem(db.Model):
     __tablename__ = "store_items"
@@ -29,4 +35,13 @@ class StoreItem(db.Model):
 
     def __repr__(self):
         return "<StoreItem: {}>".format(self.name)
+
+    def serialize_store_item(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "price": self.price,
+            "store_id": self.store_id
+        }
+
 

@@ -35,8 +35,8 @@ def get_store(name):
 def get_stores():
     stores = Store.query.all()
     store_items = StoreItem.query.all()
-    serialized_stores = [store.serialize() for store in stores]
-    serialized_items = [item.serialize() for item in store_items]
+    serialized_stores = [store.serialize_store() for store in stores]
+    serialized_items = [item.serialize_store_item() for item in store_items]
     return jsonify(stores=serialized_stores, items=serialized_items)
     # return render_template('stores.html', stores=stores)
 
