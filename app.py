@@ -2,8 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, db_connect, Store, StoreItem
+from flask_cors import CORS
 
 app = Flask(__name__)
+# https://flask-cors.readthedocs.io/en/latest/
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///udemy_stores'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
