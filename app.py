@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, db_connect, Store, StoreItem
+from models import db, db_connect, Store, StoreItem, StoreSchema
+from flask_marshmallow import Marshmallow
 from flask_cors import CORS
+
 
 app = Flask(__name__)
 # https://flask-cors.readthedocs.io/en/latest/
@@ -22,14 +24,14 @@ db.create_all()
 
 @app.route('/')
 def home():
-    return "Hello, World!"
+    return render_template('index.html')
 
 stores = []
 
 @app.route('/store', methods=['POST'])
 def create_store():
     pass
-
+    
 @app.route('/store/<string:name>')
 def get_store(name):
     pass
@@ -37,10 +39,19 @@ def get_store(name):
 @app.route('/store')
 def get_stores():
     stores = Store.query.all()
-    store_items = StoreItem.query.all()
-    serialized_stores = [store.serialize_store() for store in stores]
-    serialized_items = [item.serialize_store_item() for item in store_items]
-    return jsonify(stores=serialized_stores, items=serialized_items)
+    print(stores)
+    store_schema = StoreSchema(many=True)
+    print(store_schema)
+    output = store_schema.dump(stores)
+    return jsonify({'stores': output})
+
+    
+
+   
+    # serialized_stores = [store.serialize_store() for store in stores]
+    # serialized_items = [item.serialize_store_item() for item in store_items]
+    
+    # return jsonify(stores=serialized_stores, items=serialized_items)
     # return render_template('stores.html', stores=stores)
 
 @app.route('/store/<string:name>/item', methods=['POST'])
@@ -50,5 +61,6 @@ def create_item_in_store():
 @app.route('/store/<string:name>/item')
 def get_item_in_store():
     pass
+
 
 
